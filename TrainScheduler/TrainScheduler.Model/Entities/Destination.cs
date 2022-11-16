@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrainScheduler.Model.Entities
@@ -17,8 +18,15 @@ namespace TrainScheduler.Model.Entities
         [ForeignKey(nameof(Arrival))]
         public int ArrivalId { get; set; }
 
+        [ForeignKey(nameof(Train))]
+        public int TrainId { get; set; }
+
         public virtual Stop Departure { get; set; }
 
         public virtual Stop Arrival { get; set; }
+
+        public virtual Train Train { get; set; }
+
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

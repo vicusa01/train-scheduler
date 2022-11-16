@@ -10,8 +10,13 @@ namespace TrainScheduler.Model.Entities
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey(nameof(Schedule))]
+        public int ScheduleId { get; set; }
+
         public double Price { get; set; }
 
         public DateTime PurchaseTime { get; set; }
+
+        public virtual Schedule Schedule { get; set; }
     }
 }

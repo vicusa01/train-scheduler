@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrainScheduler.Core.Database;
+using TrainScheduler.Core.Services;
+using TrainScheduler.Model.Interfaces;
 
 namespace TrainScheduler.App
 {
@@ -26,9 +29,24 @@ namespace TrainScheduler.App
         {
             services.AddControllersWithViews();
 
+            services.AddDefaultIdentity<IdentityUser>()
+                //.AddSignInManager()
+                .AddEntityFrameworkStores<TrainSchedulerContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+
             services.AddDbContext<TrainSchedulerContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("DevConnection"), 
                     new MySqlServerVersion(new Version(8, 0, 30))));
+
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,6 +65,7 @@ namespace TrainScheduler.App
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
