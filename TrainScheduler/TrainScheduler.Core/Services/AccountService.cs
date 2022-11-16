@@ -7,19 +7,24 @@ using TrainScheduler.Model.Interfaces;
 using TrainScheduler.Model.Models;
 using TrainScheduler.Model.ViewModels;
 using System.Linq;
+using TrainScheduler.Model.Enums;
+using TrainScheduler.Model.Exceptions;
 
 namespace TrainScheduler.Core.Services
 {
     public class AccountService : IAccountService
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public AccountService(
             UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         }
 
@@ -33,15 +38,21 @@ namespace TrainScheduler.Core.Services
 
             var identityResult = await _userManager.CreateAsync(user, registerModel.Password);
 
+            if (identityResult.Succeeded)
+            {
+                var userRole = await _roleManager.FindByNameAsync(RoleNames.User.ToString());
+                if (userRole == null)
+                {
+                    throw new ObjectNotFoundException("User Role");
+                }
+
+                await _userManager.AddToRoleAsync(user, userRole.Name);
+            }
+
             return new AuthResult(identityResult.Succeeded) 
             { 
                 Errors = identityResult.Errors.Select(e => e.Description).ToList()
             };
-        }
-
-        public Task SignInAsync()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<AuthResult> SignInAsync(LoginModel loginModel)

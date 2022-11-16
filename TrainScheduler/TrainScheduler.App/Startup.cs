@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,8 +31,8 @@ namespace TrainScheduler.App
             services.AddControllersWithViews();
 
             services.AddDefaultIdentity<IdentityUser>()
-                //.AddSignInManager()
-                .AddEntityFrameworkStores<TrainSchedulerContext>();
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<TrainSchedulerContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -45,6 +46,18 @@ namespace TrainScheduler.App
             services.AddDbContext<TrainSchedulerContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("DevConnection"), 
                     new MySqlServerVersion(new Version(8, 0, 30))));
+
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.Name = "TrainSchedulerCookie";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Account/Login";
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
+            });
 
             services.AddScoped<IAccountService, AccountService>();
         }
