@@ -5,13 +5,14 @@
 }
 
 <a asp-controller="Admin" asp-action="CreateTrain">Create train</a>
-<br/>
+<br/><br />
 
 <table class="table">
     <tr>
         <th>Number</th>
         <th>TrainType</th>
         <th>Seats</th>
+        <th></th>
     </tr>
     @foreach (var train in Model)
     {
@@ -21,7 +22,7 @@
              <td>@train.Seats</td>
             <td>
                 <form asp-controller="Admin" asp-action="DeleteTrain" asp-route-id="@train.Id" method="post">
-                    <a class="btn btn-sm btn-primary" asp-action="EditTrain" asp-route-id="@train.Id">Изменить</a>
+                    <a class="btn btn-sm btn-primary" asp-action="EditTrain" asp-route-id="@train.Id">Update</a>
                     <button type="submit" class="btn btn-sm btn-danger">
                         Remove
                     </button>

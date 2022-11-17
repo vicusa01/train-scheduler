@@ -61,6 +61,7 @@ namespace TrainScheduler.App
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IStopService, StopService>();
             services.AddScoped<ITrainService, TrainService>();
+            services.AddScoped<IDestinationService, DestinationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

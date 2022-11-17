@@ -12,13 +12,16 @@ namespace TrainScheduler.App.Controllers
     {
         private readonly IStopService _stopService;
         private readonly ITrainService _trainService;
+        private readonly IDestinationService _destinationService;
 
         public AdminController(
             IStopService stopService,
-            ITrainService trainService)
+            ITrainService trainService,
+            IDestinationService destinationService)
         {
             _stopService = stopService ?? throw new ArgumentNullException(nameof(stopService));
             _trainService = trainService ?? throw new ArgumentNullException(nameof(trainService));
+            _destinationService = destinationService ?? throw new ArgumentNullException(nameof(destinationService));
         }
 
         [HttpGet]
@@ -86,6 +89,8 @@ namespace TrainScheduler.App.Controllers
 
         #endregion
 
+        #region Trains
+
         [HttpGet]
         public async Task<IActionResult> Trains()
         {
@@ -141,10 +146,80 @@ namespace TrainScheduler.App.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Destinations
+
         [HttpGet]
-        public IActionResult Destinations()
+        public async Task<IActionResult> Destinations()
         {
-            return View();
+            var destinations = await _destinationService.GetAllAsync();
+            return View(destinations);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateDestination()
+        {
+            var model = new CreateDestinationModel()
+            {
+                Stops = await _stopService.GetAllAsync(),
+                Trains = await _trainService.GetAllAsync()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDestination(CreateDestinationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _destinationService.CreateAsync(model);
+                return RedirectToAction("Destinations");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteDestination(int id)
+        {
+            await _destinationService.DeleteAsync(id);
+            return RedirectToAction("Destinations");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDestination(int id)
+        {
+            var destination = await _destinationService.GetByIdAsync(id);
+            if (destination == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UpdateDestinationModel() 
+            { 
+                Id = destination.Id, 
+                Name = destination.Name,
+                DepartureId = destination.DepartureId,
+                ArrivalId = destination.ArrivalId,
+                TrainId = destination.TrainId,
+                Stops = await _stopService.GetAllAsync(),
+                Trains = await _trainService.GetAllAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditDestination(UpdateDestinationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _destinationService.UpdateAsync(model);
+                return RedirectToAction("Destinations");
+            }
+            return View(model);
+        }
+
+        #endregion
     }
 }

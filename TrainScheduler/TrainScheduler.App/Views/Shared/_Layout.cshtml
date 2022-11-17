@@ -3,15 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TrainScheduler.App</title>
+    <title>@ViewData["Title"] - Train Scheduler</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TrainScheduler.App</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TrainScheduler</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,31 +30,28 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Админка</a>
+                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Addmin Panel</a>
                             </li>
                         }
 
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">   
-                                <div class="nav-link">
-                                    <form method="post" asp-controller="Account" asp-action="Logout">
-                                        <span>@User.Identity.Name</span>
-                                        <input type="submit" value="Выход" />
-                                    </form>
-                                </div>      
-                            </li>
-                        }
-                        else
+                        @if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">SignIn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Регистрация</a>
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                         }
                     </ul>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form class="form-inline my-2 my-lg-0" method="post" asp-controller="Account" asp-action="Logout">
+                            <span style="margin-right: 5px">@User.Identity.Name</span>
+                            <input class="btn btn-secondary" type="submit" value="Выход" />
+                        </form>
+                    }
                 </div>
             </div>
         </nav>
@@ -65,11 +64,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - TrainScheduler.App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - Train Scheduler - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

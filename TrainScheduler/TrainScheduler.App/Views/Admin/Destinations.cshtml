@@ -1,0 +1,35 @@
+﻿@model List<Destination>
+
+@{
+    ViewData["Title"] = "Destinations";
+}
+
+<a asp-controller="Admin" asp-action="CreateDestination">Create destination</a>
+<br /><br />
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Train number</th>
+        <th></th>
+    </tr>
+    @foreach (var destination in Model)
+    {
+        <tr>
+            <td>@destination.Name</td>
+            <td>@destination.Departure.Name</td>
+            <td>@destination.Arrival.Name</td>
+            <td>@destination.Train.Number</td>
+            <td>
+                <form asp-controller="Admin" asp-action="DeleteDestination" asp-route-id="@destination.Id" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="EditDestination" asp-route-id="@destination.Id">Update</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
