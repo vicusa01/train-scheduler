@@ -1,0 +1,29 @@
+﻿@model List<Stop>
+
+@{
+    ViewData["Title"] = "Stops";
+}
+
+<a asp-controller="Admin" asp-action="CreateStop">Create stop</a>
+
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th></th>
+    </tr>
+    @foreach (var stop in Model)
+    {
+        <tr>
+            <td>@stop.Name</td>
+            <td>
+                <form asp-controller="Admin" asp-action="DeleteStop" asp-route-id="@stop.Id" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="EditStop" asp-route-id="@stop.Id">Изменить</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

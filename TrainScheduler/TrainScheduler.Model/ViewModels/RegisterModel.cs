@@ -5,6 +5,7 @@ namespace TrainScheduler.Model.ViewModels
     public class RegisterModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

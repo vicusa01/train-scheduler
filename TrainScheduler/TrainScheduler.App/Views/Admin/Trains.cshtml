@@ -1,0 +1,32 @@
+﻿@model List<Train>
+
+@{
+    ViewData["Title"] = "Trains";
+}
+
+<a asp-controller="Admin" asp-action="CreateTrain">Create train</a>
+<br/>
+
+<table class="table">
+    <tr>
+        <th>Number</th>
+        <th>TrainType</th>
+        <th>Seats</th>
+    </tr>
+    @foreach (var train in Model)
+    {
+        <tr>
+            <td>@train.Number</td>
+            <td>@train.TrainType</td>
+             <td>@train.Seats</td>
+            <td>
+                <form asp-controller="Admin" asp-action="DeleteTrain" asp-route-id="@train.Id" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="EditTrain" asp-route-id="@train.Id">Изменить</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

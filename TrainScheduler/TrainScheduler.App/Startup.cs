@@ -47,7 +47,6 @@ namespace TrainScheduler.App
                     options.UseMySql(Configuration.GetConnectionString("DevConnection"), 
                     new MySqlServerVersion(new Version(8, 0, 30))));
 
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = "/Account/AccessDenied";
@@ -60,6 +59,8 @@ namespace TrainScheduler.App
             });
 
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IStopService, StopService>();
+            services.AddScoped<ITrainService, TrainService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
