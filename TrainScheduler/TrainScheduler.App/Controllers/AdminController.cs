@@ -13,15 +13,18 @@ namespace TrainScheduler.App.Controllers
         private readonly IStopService _stopService;
         private readonly ITrainService _trainService;
         private readonly IDestinationService _destinationService;
+        private readonly IScheduleService _scheduleService;
 
         public AdminController(
             IStopService stopService,
             ITrainService trainService,
-            IDestinationService destinationService)
+            IDestinationService destinationService,
+            IScheduleService scheduleService)
         {
             _stopService = stopService ?? throw new ArgumentNullException(nameof(stopService));
             _trainService = trainService ?? throw new ArgumentNullException(nameof(trainService));
             _destinationService = destinationService ?? throw new ArgumentNullException(nameof(destinationService));
+            _scheduleService = scheduleService ?? throw new ArgumentNullException(nameof(scheduleService));
         }
 
         [HttpGet]
@@ -176,6 +179,10 @@ namespace TrainScheduler.App.Controllers
                 await _destinationService.CreateAsync(model);
                 return RedirectToAction("Destinations");
             }
+
+            model.Stops = await _stopService.GetAllAsync();
+            model.Trains = await _trainService.GetAllAsync();
+
             return View(model);
         }
 
@@ -217,6 +224,85 @@ namespace TrainScheduler.App.Controllers
                 await _destinationService.UpdateAsync(model);
                 return RedirectToAction("Destinations");
             }
+
+            model.Stops = await _stopService.GetAllAsync();
+            model.Trains = await _trainService.GetAllAsync();
+
+            return View(model);
+        }
+
+        #endregion
+
+        #region Schedules
+
+        [HttpGet]
+        public async Task<IActionResult> Schedules()
+        {
+            var schedules = await _scheduleService.GetAllAsync();
+            return View(schedules);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateSchedule()
+        {
+            var model = new CreateScheduleModel()
+            {
+                Destinations = await _destinationService.GetAllAsync(), 
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSchedule(CreateScheduleModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _scheduleService.CreateAsync(model);
+                return RedirectToAction("Schedules");
+            }
+
+            model.Destinations = await _destinationService.GetAllAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSchedule(int id)
+        {
+            await _scheduleService.DeleteAsync(id);
+            return RedirectToAction("Schedules");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditSchedule(int id)
+        {
+            var schedule = await _scheduleService.GetByIdAsync(id);
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UpdateScheduleModel()
+            {
+                Id = schedule.Id,  
+                DestinationId = schedule.DestinationId,
+                ArrivalTime = schedule.ArrivalTime,
+                DepartureTime = schedule.DepartureTime,
+                Destinations = await _destinationService.GetAllAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSchedule(UpdateScheduleModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _scheduleService.UpdateAsync(model);
+                return RedirectToAction("Schedules");
+            }
+
+            model.Destinations = await _destinationService.GetAllAsync();
             return View(model);
         }
 

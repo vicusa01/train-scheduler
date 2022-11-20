@@ -1,0 +1,60 @@
+﻿@model UpdateScheduleModel
+@{
+    ViewBag.Title = "Edit Schedule";
+}
+
+<form asp-action="EditSchedule" asp-controller="Admin">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Destination</label>
+        <select class="custom-select" aria-label="Select Destination"
+                asp-for="DestinationId"
+                asp-items="@(new SelectList(Model.Destinations, nameof(Destination.Id), nameof(Destination.Name)))">
+        </select>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label asp-for="DepartureTime" class="control-label">Departure time</label>
+            <div class="input-group date" id="datetimepicker1">
+                <input type="datetime" asp-for="DepartureTime" value="@Model.DepartureTime" class="form-control" />
+                <div class="input-group-addon input-group-append">
+                    <div class="input-group-text">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <label asp-for="ArrivalTime" class="control-label">Arrival time</label>
+            <div class="input-group date" id="datetimepicker1">
+                <input type="datetime" asp-for="ArrivalTime" value="@Model.ArrivalTime" class="form-control" />
+                <div class="input-group-addon input-group-append">
+                    <div class="input-group-text">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-outline-secondary" />
+    </div>
+</form>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(function () {
+                $('.date').datetimepicker({
+                    defaultDate: new Date(),
+                    format: 'DD/MM/YYYY HH:mm'
+                });
+            });
+        })(jQuery);
+    </script>
+}

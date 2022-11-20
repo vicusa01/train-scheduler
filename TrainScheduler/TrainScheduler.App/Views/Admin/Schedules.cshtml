@@ -1,0 +1,32 @@
+﻿@model List<Schedule>
+
+@{
+    ViewData["Title"] = "Schedules";
+}
+
+<a asp-controller="Admin" asp-action="CreateSchedule">Create schedule</a>
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th>Destination</th>
+        <th>Time</th>
+        <th></th>
+    </tr>
+    @foreach (var schedule in Model)
+    {
+        <tr>
+            <td>@schedule.Destination.Name</td>
+            <td>@schedule.DepartureTime - @schedule.ArrivalTime</td>
+            <td>
+                <form asp-controller="Admin" asp-action="DeleteSchedule" asp-route-id="@schedule.Id" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="EditSchedule" asp-route-id="@schedule.Id">Update</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
