@@ -1,0 +1,38 @@
+﻿@model List<Ticket>
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<a asp-controller="Admin" asp-action="CreateTicket">Create ticket</a>
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th>Destination</th>
+        <th>Schedule time</th>
+        <th>User</th>
+        <th>FIO</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    @foreach (var ticket in Model)
+    {
+        <tr>
+            <td>@ticket.Schedule.Destination.Name</td>
+            <td>@ticket.Schedule.DepartureTime - @ticket.Schedule.ArrivalTime</td>
+            <td>@ticket.User.Email</td>
+            <td>@ticket.Fio</td>
+            <td>@ticket.Price</td>
+            <td>
+                <form asp-controller="Admin" asp-action="DeleteTicket" asp-route-id="@ticket.Id" method="post">
+                    <a class="btn btn-sm btn-primary" asp-action="EditTicket" asp-route-id="@ticket.Id">Update</a>
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

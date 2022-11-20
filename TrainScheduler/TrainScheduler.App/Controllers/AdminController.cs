@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +15,23 @@ namespace TrainScheduler.App.Controllers
         private readonly ITrainService _trainService;
         private readonly IDestinationService _destinationService;
         private readonly IScheduleService _scheduleService;
+        private readonly ITicketService _ticketService;
+        private readonly IAccountService _accountService;
 
         public AdminController(
             IStopService stopService,
             ITrainService trainService,
             IDestinationService destinationService,
-            IScheduleService scheduleService)
+            IScheduleService scheduleService,
+            ITicketService ticketService,
+            IAccountService accountService)
         {
             _stopService = stopService ?? throw new ArgumentNullException(nameof(stopService));
             _trainService = trainService ?? throw new ArgumentNullException(nameof(trainService));
             _destinationService = destinationService ?? throw new ArgumentNullException(nameof(destinationService));
             _scheduleService = scheduleService ?? throw new ArgumentNullException(nameof(scheduleService));
+            _ticketService = ticketService ?? throw new ArgumentNullException(nameof(ticketService));
+            _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         }
 
         [HttpGet]
@@ -303,6 +310,116 @@ namespace TrainScheduler.App.Controllers
             }
 
             model.Destinations = await _destinationService.GetAllAsync();
+            return View(model);
+        }
+
+        #endregion
+
+        #region Tickets
+
+        [HttpGet]
+        public async Task<IActionResult> Tickets()
+        {
+            var schedules = await _ticketService.GetAllAsync();
+            return View(schedules);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateTicket()
+        {
+            var schedules = await _scheduleService.GetAllAsync();
+            var schedulesModel = schedules.Select(s => new SelectListItem()
+            {
+                Value = s.Id.ToString(),
+                Text = $"{s.Destination.Name}: {s.DepartureTime} - {s.ArrivalTime}"
+            }).ToList();
+
+            var model = new CreateTicketModel()
+            {
+                Schedules = schedulesModel,
+                Users = await _accountService.GetAllUsersAsync()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTicket(CreateTicketModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _ticketService.CreateAsync(model);
+                return RedirectToAction("Tickets");
+            }
+
+            var schedules = await _scheduleService.GetAllAsync();
+            var schedulesModel = schedules.Select(s => new SelectListItem()
+            {
+                Value = s.Id.ToString(),
+                Text = $"{s.Destination.Name}: {s.DepartureTime} - {s.ArrivalTime}"
+            }).ToList();
+
+            model.Schedules = schedulesModel;
+            model.Users = await _accountService.GetAllUsersAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTicket(int id)
+        {
+            await _ticketService.DeleteAsync(id);
+            return RedirectToAction("Tickets");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTicket(int id)
+        {
+            var ticket = await _ticketService.GetByIdAsync(id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            var schedules = await _scheduleService.GetAllAsync();
+            var schedulesModel = schedules.Select(s => new SelectListItem()
+            {
+                Value = s.Id.ToString(),
+                Text = $"{s.Destination.Name}: {s.DepartureTime} - {s.ArrivalTime}"
+            }).ToList();
+
+            var model = new UpdateTicketModel()
+            {
+                Id = ticket.Id,
+                ScheduleId = ticket.ScheduleId,
+                UserId = ticket.UserId,
+                Fio = ticket.Fio,
+                Price = ticket.Price,
+                Schedules = schedulesModel,
+                Users = await _accountService.GetAllUsersAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTicket(UpdateTicketModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _ticketService.UpdateAsync(model);
+                return RedirectToAction("Tickets");
+            }
+
+            var schedules = await _scheduleService.GetAllAsync();
+            var schedulesModel = schedules.Select(s => new SelectListItem()
+            {
+                Value = s.Id.ToString(),
+                Text = $"{s.Destination.Name}: {s.DepartureTime} - {s.ArrivalTime}"
+            }).ToList();
+
+            model.Schedules = schedulesModel;
+            model.Users = await _accountService.GetAllUsersAsync();
+
             return View(model);
         }
 

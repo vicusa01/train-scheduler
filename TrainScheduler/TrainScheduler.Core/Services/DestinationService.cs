@@ -64,14 +64,14 @@ namespace TrainScheduler.Core.Services
             return await _dbContext.Destinations.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Destination>> GetAllAsync()
+        public Task<List<Destination>> GetAllAsync()
         {
-            return await _dbContext.Destinations
-                                   .Include(x => x.Departure)
-                                   .Include(x => x.Arrival)
-                                   .Include(x => x.Train)
-                                   .AsNoTracking()
-                                   .ToListAsync();
+            return _dbContext.Destinations
+                             .Include(x => x.Departure)
+                             .Include(x => x.Arrival)
+                             .Include(x => x.Train)
+                             .AsNoTracking()
+                             .ToListAsync();
         }
     }
 }

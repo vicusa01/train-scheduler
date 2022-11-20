@@ -63,6 +63,7 @@ namespace TrainScheduler.App
             services.AddScoped<ITrainService, TrainService>();
             services.AddScoped<IDestinationService, DestinationService>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<ITicketService, TicketService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -93,6 +94,7 @@ namespace TrainScheduler.App
 
             using var scope = app.ApplicationServices.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<TrainSchedulerContext>();
+            context.Database.Migrate();
         }
     }
 }

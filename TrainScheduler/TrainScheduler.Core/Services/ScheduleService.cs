@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrainScheduler.Core.Database;
+using TrainScheduler.Model.Dto;
 using TrainScheduler.Model.Entities;
 using TrainScheduler.Model.Exceptions;
 using TrainScheduler.Model.Interfaces;
@@ -63,12 +65,34 @@ namespace TrainScheduler.Core.Services
             return await _dbContext.Schedules.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Schedule>> GetAllAsync()
+        public Task<List<Schedule>> GetAllAsync()
         {
-            return await _dbContext.Schedules
-                                   .Include(x => x.Destination)
-                                   .AsNoTracking()
-                                   .ToListAsync();
+            return _dbContext.Schedules
+                             .Include(x => x.Destination)
+                             .AsNoTracking()
+                             .ToListAsync();
+        }
+
+        public async Task<List<AvailableSeatsDto>> GetAvailableSeatsAsync(int destinationId, DateTime date)
+        {
+            var schedules = await _dbContext.Schedules
+               .AsNoTracking()
+               .Where(s => s.DestinationId == destinationId && s.DepartureTime.Date == date.Date)
+               .Select(x => new
+               {
+                   Schedule = x,
+                   Tickets = x.Tickets,
+                   TrainSeats = x.Destination.Train.Seats
+               })
+               .ToListAsync();
+
+            var results = schedules.Select(s => new AvailableSeatsDto()
+            {
+                Schedule = s.Schedule,
+                Seats = s.TrainSeats - s.Tickets.Count
+            });
+
+            return results.Where(s => s.Seats > 0).ToList();
         }
     }
 }

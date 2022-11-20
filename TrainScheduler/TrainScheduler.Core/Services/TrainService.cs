@@ -63,9 +63,9 @@ namespace TrainScheduler.Core.Services
             return await _dbContext.Trains.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Train>> GetAllAsync()
+        public Task<List<Train>> GetAllAsync()
         {
-            return await _dbContext.Trains.AsNoTracking().ToListAsync();
+            return _dbContext.Trains.AsNoTracking().ToListAsync();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TrainScheduler.Model.Models;
 using TrainScheduler.Model.ViewModels;
 
@@ -10,6 +12,8 @@ namespace TrainScheduler.Model.Interfaces
 
         Task<AuthResult> SignInAsync(LoginModel loginModel);
 
-        Task SignOut();
+        Task SignOutAsync();
+
+        Task<List<IdentityUser>> GetAllUsersAsync();
     }
 }

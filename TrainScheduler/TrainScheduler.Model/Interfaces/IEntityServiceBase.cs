@@ -7,6 +7,6 @@ namespace TrainScheduler.Model.Interfaces
     {
         Task DeleteAsync(int id);
         Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<List<TEntity>> GetAllAsync();
     }
 }

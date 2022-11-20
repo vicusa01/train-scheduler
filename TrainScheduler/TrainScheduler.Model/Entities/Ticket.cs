@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace TrainScheduler.Model.Entities
 {
@@ -13,10 +14,19 @@ namespace TrainScheduler.Model.Entities
         [ForeignKey(nameof(Schedule))]
         public int ScheduleId { get; set; }
 
+        [Required]
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
+
         public double Price { get; set; }
+
+        [Required]
+        public string Fio { get; set; }
 
         public DateTime PurchaseTime { get; set; }
 
         public virtual Schedule Schedule { get; set; }
+
+        public virtual IdentityUser User { get; set; }
     }
 }

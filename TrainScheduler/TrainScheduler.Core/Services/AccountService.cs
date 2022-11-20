@@ -9,6 +9,8 @@ using TrainScheduler.Model.ViewModels;
 using System.Linq;
 using TrainScheduler.Model.Enums;
 using TrainScheduler.Model.Exceptions;
+using TrainScheduler.Core.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrainScheduler.Core.Services
 {
@@ -17,15 +19,18 @@ namespace TrainScheduler.Core.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly TrainSchedulerContext _dbContext;
 
         public AccountService(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            TrainSchedulerContext dbContext)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<AuthResult> RegisterAsync(RegisterModel registerModel)
@@ -77,9 +82,14 @@ namespace TrainScheduler.Core.Services
             return result;
         }
 
-        public Task SignOut()
+        public Task SignOutAsync()
         {
             return _signInManager.SignOutAsync();
+        }
+
+        public Task<List<IdentityUser>> GetAllUsersAsync()
+        {
+            return _dbContext.Users.AsNoTracking().ToListAsync();
         }
     }
 }

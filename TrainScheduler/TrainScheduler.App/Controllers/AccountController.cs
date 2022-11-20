@@ -88,7 +88,7 @@ namespace TrainScheduler.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _accountService.SignOut();
+            await _accountService.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,0 +1,63 @@
+﻿@model AvailableSeatsModel
+
+@{
+    ViewData["Title"] = "Available Seats";
+}
+
+<form asp-action="AvailableSeats" asp-controller="Schedule">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-row">
+        <div class="col" style="max-width: 500px">
+            <select class="custom-select"
+                    asp-for="DestinationId"
+                    asp-items="@(new SelectList(Model.Destinations, nameof(Destination.Id), nameof(Destination.Name)))">
+            </select>
+        </div>
+        <div class="col">
+            <div class="input-group date" id="datetimepicker1">
+                <input type="datetime" asp-for="Date" value="@Model.Date" class="form-control" />
+                <div class="input-group-addon input-group-append">
+                    <div class="input-group-text">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <input type="submit" value="Search available seats" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
+
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th>Departure Time</th>
+        <th>Arrival Time</th>
+        <th>Available seats</th>
+    </tr>
+    @foreach (var availableSeat in Model.AvailableSeats)
+    {
+        <tr>
+            <td>@availableSeat.Schedule.DepartureTime</td>
+            <td>@availableSeat.Schedule.ArrivalTime</td>
+            <td>@availableSeat.Seats</td>
+        </tr>
+    }
+</table>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(function () {
+                $('.date').datetimepicker({
+                    defaultDate: new Date(),
+                    format: 'DD/MM/YYYY'
+                });
+            });
+        })(jQuery);
+    </script>
+}
