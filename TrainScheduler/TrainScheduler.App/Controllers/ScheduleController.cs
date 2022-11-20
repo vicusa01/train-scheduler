@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrainScheduler.Model.Interfaces;
 using TrainScheduler.Model.ViewModels;
+using TrainScheduler.Core.Helpers;
+using TrainScheduler.App.Constants;
 
 namespace TrainScheduler.App.Controllers
 {
@@ -15,7 +18,6 @@ namespace TrainScheduler.App.Controllers
 
         public ScheduleController(
             IScheduleService scheduleService,
-            IAccountService accountService,
             IDestinationService destinationService)
         {
             _scheduleService = scheduleService ?? throw new ArgumentNullException(nameof(scheduleService));
@@ -46,6 +48,48 @@ namespace TrainScheduler.App.Controllers
             };
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Schedule()
+        {
+            var model = new ScheduleModel()
+            {
+                Date = DateTime.Now,
+                Schedules = await _scheduleService.GetByDateAsync(DateTime.Now)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Schedule(DateTime date)
+        {
+            var model = new ScheduleModel()
+            {
+                Date = date,
+                Schedules = await _scheduleService.GetByDateAsync(date)
+            };
+
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult BookTicket(int scheduleId)
+        {
+            if (HttpContext.Session.TryGet<List<int>>(CacheConstants.BookedSchedules, out var bookedSchedules))
+            {
+                bookedSchedules.Add(scheduleId);
+                HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
+            }
+            else
+            {
+                bookedSchedules = new List<int>() { scheduleId };
+            }
+
+            HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
+            return NoContent();
         }
     }
 }

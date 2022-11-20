@@ -1,0 +1,62 @@
+﻿@model ScheduleModel
+
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<form asp-action="Schedule" asp-controller="Schedule">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-row">
+        <div class="col">
+            <div class="input-group date" id="datetimepicker1">
+                <input type="datetime" asp-for="Date" value="@Model.Date" class="form-control" />
+                <div class="input-group-addon input-group-append">
+                    <div class="input-group-text">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <input type="submit" value="Search schedule" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
+
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Departure Time</th>
+        <th>Arrival Time</th>  
+    </tr>
+    @foreach (var schedule in Model.Schedules)
+    {
+        <tr>
+            <td>@schedule.Departure</td>
+            <td>@schedule.Arrival</td>
+            <td>@schedule.DepartureTime</td>
+            <td>@schedule.ArrivalTime</td>
+        </tr>
+    }
+</table>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(function () {
+                console.log(new Date().toLocaleDateString("en-US"));
+
+                $('.date').datetimepicker({
+                    defaultDate: new Date(),
+                    format: 'DD/MM/YYYY',
+                    minDate: new Date().toLocaleDateString("en-US")
+                });
+            });
+        })(jQuery);
+    </script>
+}

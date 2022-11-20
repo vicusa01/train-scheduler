@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrainScheduler.Model.Enums;
 using TrainScheduler.Model.Interfaces;
 using TrainScheduler.Model.ViewModels;
 
 namespace TrainScheduler.App.Controllers
 {
+    [Authorize(Roles = nameof(RoleNames.Admin))]
     public class AdminController : Controller
     {
         private readonly IStopService _stopService;

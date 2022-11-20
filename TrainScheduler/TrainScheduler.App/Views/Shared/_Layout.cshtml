@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using TrainScheduler.Core.Helpers  
+@{ 
+    var hasBooking = Context.Session.TryGet<List<int>>(TrainScheduler.App.Constants.CacheConstants.BookedSchedules, out var bookedSchedules);
+    var bookedSchedulesCount = hasBooking ? bookedSchedules.Count : default;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -41,7 +47,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Addmin Panel</a>
+                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
                             </li>
                         }
 
@@ -58,6 +64,8 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <span>Korzina: @bookedSchedulesCount</span>
+
                         <form class="form-inline my-2 my-lg-0" method="post" asp-controller="Account" asp-action="Logout">
                             <span style="margin-right: 5px">@User.Identity.Name</span>
                             <input class="btn btn-secondary" type="submit" value="Logout" />
@@ -78,9 +86,9 @@
             &copy; 2022 - Train Scheduler - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-   
-   
-   
+
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -94,5 +94,21 @@ namespace TrainScheduler.Core.Services
 
             return results.Where(s => s.Seats > 0).ToList();
         }
+
+        public Task<List<ScheduleDto>> GetByDateAsync(DateTime date)
+        {
+            return _dbContext.Schedules
+                .AsNoTracking()
+                .Where(s => s.DepartureTime.Date == date.Date)
+                .Select(s => new ScheduleDto()
+                {
+                    Id = s.Id,
+                    DepartureTime = s.DepartureTime,
+                    ArrivalTime = s.ArrivalTime,
+                    Departure = s.Destination.Departure.Name,
+                    Arrival = s.Destination.Arrival.Name
+                })
+                .ToListAsync();
+        }
     }
 }

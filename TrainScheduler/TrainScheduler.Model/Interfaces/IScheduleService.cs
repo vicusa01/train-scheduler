@@ -15,5 +15,7 @@ namespace TrainScheduler.Model.Interfaces
         Task UpdateAsync(UpdateScheduleModel model);
 
         Task<List<AvailableSeatsDto>> GetAvailableSeatsAsync(int destinationId, DateTime date);
+
+        Task<List<ScheduleDto>> GetByDateAsync(DateTime date);
     }
 }

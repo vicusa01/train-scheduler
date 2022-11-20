@@ -37,6 +37,10 @@
         <th>Departure Time</th>
         <th>Arrival Time</th>
         <th>Available seats</th>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <th></th>
+        }
     </tr>
     @foreach (var availableSeat in Model.AvailableSeats)
     {
@@ -44,6 +48,16 @@
             <td>@availableSeat.Schedule.DepartureTime</td>
             <td>@availableSeat.Schedule.ArrivalTime</td>
             <td>@availableSeat.Seats</td>
+            @if(User.Identity.IsAuthenticated)
+            {
+            <td>
+                <form asp-controller="Schedule" asp-action="BookTicket" asp-route-id="@availableSeat.Schedule.Id" method="post">
+                   <button type="submit" class="btn btn-sm btn-primary">
+                       Book Up
+                   </button>
+                </form>
+            </td>     
+            }
         </tr>
     }
 </table>
@@ -55,7 +69,8 @@
             $(function () {
                 $('.date').datetimepicker({
                     defaultDate: new Date(),
-                    format: 'DD/MM/YYYY'
+                    format: 'DD/MM/YYYY',
+                    minDate: new Date().toLocaleDateString("en-US")
                 });
             });
         })(jQuery);

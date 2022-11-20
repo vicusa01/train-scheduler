@@ -58,6 +58,14 @@ namespace TrainScheduler.App
                 options.SlidingExpiration = true;
             });
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IStopService, StopService>();
             services.AddScoped<ITrainService, TrainService>();
@@ -84,6 +92,8 @@ namespace TrainScheduler.App
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
