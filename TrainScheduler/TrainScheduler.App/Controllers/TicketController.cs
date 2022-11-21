@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using TrainScheduler.Model.ViewModels;
 
 namespace TrainScheduler.App.Controllers
 {
+    [Authorize]
     public class TicketController : Controller
     {
         private readonly ITicketService _ticketService;
@@ -71,6 +73,36 @@ namespace TrainScheduler.App.Controllers
                 Report = await _ticketService.GetTicketsReportAsync(from, to)
             };
 
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult IssueTickets()
+        {
+            var model = new IssueTicketsModel()
+            {
+               Tickets = new List<BuyTicketModel>()
+               {
+                   new BuyTicketModel()
+                   {
+                       ScheduleId = 7,
+                       Price = 50
+                   },
+                   new BuyTicketModel()
+                   {
+                       ScheduleId = 3,
+                       Price = 20
+                   }
+               }
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult IssueTickets(IssueTicketsModel model)
+        {
+            var a = ModelState.IsValid;
             return View(model);
         }
     }

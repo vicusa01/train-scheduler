@@ -63,13 +63,19 @@
                     </ul>
 
                     @if (User.Identity.IsAuthenticated)
-                    {
-                        <span>Korzina: @bookedSchedulesCount</span>
+                    {          
+                        <div style="margin-left: 200px;">
+                            <a asp-controller="Ticket" asp-action="IssueTickets">
+                                <span>Korzina: </span>
+                                <span id="basket">@bookedSchedulesCount</span>
+                            </a>    
+                        </div>
 
                         <form class="form-inline my-2 my-lg-0" method="post" asp-controller="Account" asp-action="Logout">
                             <span style="margin-right: 5px">@User.Identity.Name</span>
                             <input class="btn btn-secondary" type="submit" value="Logout" />
                         </form>
+
                     }
                 </div>
             </div>
@@ -87,8 +93,7 @@
         </div>
     </footer>
 
-
-
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
-</html>
+</html >

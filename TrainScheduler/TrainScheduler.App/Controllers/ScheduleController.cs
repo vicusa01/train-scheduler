@@ -89,7 +89,7 @@ namespace TrainScheduler.App.Controllers
             }
 
             HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
-            return NoContent();
+            return Ok(bookedSchedules.Count);
         }
     }
 }

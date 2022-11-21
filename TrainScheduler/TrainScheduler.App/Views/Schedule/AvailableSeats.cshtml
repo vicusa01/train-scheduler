@@ -51,11 +51,10 @@
             @if(User.Identity.IsAuthenticated)
             {
             <td>
-                <form asp-controller="Schedule" asp-action="BookTicket" asp-route-id="@availableSeat.Schedule.Id" method="post">
-                   <button type="submit" class="btn btn-sm btn-primary">
-                       Book Up
-                   </button>
-                </form>
+                <span hidden data="@availableSeat.Schedule.Id"></span>    
+                <button type="submit" class="btn btn-sm btn-primary">
+                    Book Up
+                </button>
             </td>     
             }
         </tr>
@@ -72,6 +71,23 @@
                     format: 'DD/MM/YYYY',
                     minDate: new Date().toLocaleDateString("en-US")
                 });
+
+                $(document).on("click", "td .btn", function () {            
+                    const url = 'https://localhost:44362/Schedule/BookTicket'
+
+                    let scheduleId = $(this).parent().children('span').attr('data');
+
+                    fetch(url,
+                        {
+                            method: 'POST',
+                            body: { scheduleId: scheduleId }
+                        })
+                        .then(rez => { return rez.json() })
+                        .then(data => {
+                            $('#basket').html(data);
+                        })
+
+                });    
             });
         })(jQuery);
     </script>
