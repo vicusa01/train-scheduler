@@ -1,0 +1,52 @@
+﻿@model List<Ticket>
+@{
+    ViewBag.Title = "User tickets";
+}
+
+@if (Model.Any())
+{
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="issue-ticket success">
+                <div class="form-group">
+                    <input type="hidden" asp-for="@Model[i].ScheduleId" />
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="@Model[i].UserId" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Destination</label>
+                    <br />
+                    <label class="control-label">@Model[i].Schedule.Destination.Name</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Departure Time</label>
+                    <br />
+                    <label class="control-label">@Model[i].Schedule.DepartureTime</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Arrival Time</label>
+                    <br />
+                    <label class="control-label">@Model[i].Schedule.ArrivalTime</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">FIO</label>
+                    <input type="text" asp-for="@Model[i].Fio" class="form-control" style="max-width:400px" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Price</label>
+                    <input disabled type="number" asp-for="@Model[i].Schedule.Destination.Price" class="form-control" style="max-width:400px" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Purchase Time</label>
+                    <label class="control-label">@Model[i].PurchaseTime</label>
+                </div>
+            </div>
+        }
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">The tickets are empty</h1>
+    </div>
+}

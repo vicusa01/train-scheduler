@@ -74,3 +74,17 @@ body {
 .auth-block {
     display: flex;
 }
+
+.issue-ticket {
+    border: 2px solid #007bff;
+    border-radius: 6px;
+    padding: 30px;
+    margin-right: 70px;
+    margin-bottom: 50px;
+    width: 450px;
+    display: inline-block;
+}
+
+    .issue-ticket.success {
+        border: 2px solid #28a745;
+    }

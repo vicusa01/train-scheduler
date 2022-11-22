@@ -23,6 +23,7 @@ namespace TrainScheduler.Core.Services
             _dbContext.Destinations.Add(new Destination()
             {
                 Name = model.Name,
+                Price = model.Price,
                 DepartureId = model.DepartureId,
                 ArrivalId = model.ArrivalId,
                 TrainId = model.TrainId
@@ -52,6 +53,7 @@ namespace TrainScheduler.Core.Services
             }
 
             destination.Name = model.Name;
+            destination.Price = model.Price;
             destination.DepartureId = model.DepartureId;
             destination.ArrivalId = model.ArrivalId;
             destination.TrainId = model.TrainId;

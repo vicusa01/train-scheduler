@@ -18,8 +18,6 @@ namespace TrainScheduler.Model.Entities
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
 
-        public double Price { get; set; }
-
         [Required]
         public string Fio { get; set; }
 

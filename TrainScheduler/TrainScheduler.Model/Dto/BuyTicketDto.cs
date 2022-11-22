@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using TrainScheduler.Model.Entities;
 
-namespace TrainScheduler.Model.ViewModels
+namespace TrainScheduler.Model.Dto
 {
-    public class BuyTicketModel
+    public class BuyTicketDto
     {
         public int ScheduleId { get; set; }
 
@@ -17,10 +16,5 @@ namespace TrainScheduler.Model.ViewModels
         public DateTime DepartureTime { get; set; }
 
         public DateTime ArrivalTime { get; set; }
-
-        [Required]
-        public string Fio { get; set; }
-
-        public string UserId { get; set; }
     }
 }

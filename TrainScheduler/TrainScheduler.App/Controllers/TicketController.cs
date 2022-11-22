@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TrainScheduler.App.Constants;
+using TrainScheduler.Core.Helpers;
 using TrainScheduler.Model.Interfaces;
 using TrainScheduler.Model.ViewModels;
 
@@ -77,33 +79,70 @@ namespace TrainScheduler.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult IssueTickets()
+        public async Task<IActionResult> IssueTickets()
         {
-            var model = new IssueTicketsModel()
+            //session
+            var model = new IssueTicketsModel();
+
+            if (HttpContext.Session.TryGet<List<int>>(CacheConstants.BookedSchedules, out var bookedSchedules))
             {
-               Tickets = new List<BuyTicketModel>()
-               {
-                   new BuyTicketModel()
-                   {
-                       ScheduleId = 7,
-                       Price = 50
-                   },
-                   new BuyTicketModel()
-                   {
-                       ScheduleId = 3,
-                       Price = 20
-                   }
-               }
-            };
+                var userId = User.Claims.Single(c => c.Type == ClaimNames.UserIdClaim).Value;
+                var buyTickets = await _ticketService.GetBuyTicketsAsync(bookedSchedules);
+
+                model.Tickets = buyTickets.Select(t => new BuyTicketModel()
+                {
+                    ScheduleId = t.ScheduleId,
+                    DepartureTime = t.DepartureTime,
+                    ArrivalTime = t.ArrivalTime,
+                    DestinationName = t.DestinationName,
+                    DestinationPrice = t.DestinationPrice,
+                    UserId = userId
+                }).ToList();
+            }
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult IssueTickets(IssueTicketsModel model)
+        public async Task<IActionResult> IssueTickets(IssueTicketsModel model)
         {
-            var a = ModelState.IsValid;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _ticketService.BuyTicketsAsync(model.Tickets);
+                    HttpContext.Session.Remove(CacheConstants.BookedSchedules);
+                }
+                catch (InvalidOperationException)
+                {
+                    return Redirect("FailedBuy");
+                }
+
+                return Redirect("SuccessBuy");
+            }
+
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserTickets()
+        {
+            var userId = User.Claims.Single(c => c.Type == ClaimNames.UserIdClaim).Value;
+            var tickets = await _ticketService.FindTicketsAsync(userId, string.Empty);
+
+            return View(tickets);
+        }
+
+        [HttpGet]
+        public IActionResult SuccessBuy()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult FailedBuy()
+        {
+            return View();
         }
     }
 }

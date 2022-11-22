@@ -9,6 +9,8 @@ namespace TrainScheduler.Model.ViewModels
         [Required]
         public string Name { get; set; }
 
+        public double Price { get; set; }
+
         public int DepartureId { get; set; }
 
         public int ArrivalId { get; set; }

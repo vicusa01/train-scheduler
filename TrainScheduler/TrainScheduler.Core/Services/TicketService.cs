@@ -28,7 +28,6 @@ namespace TrainScheduler.Core.Services
             {
                 ScheduleId = model.ScheduleId,
                 UserId = model.UserId,
-                Price = model.Price,
                 Fio = model.Fio,
                 PurchaseTime = DateTime.Now
             });
@@ -58,7 +57,6 @@ namespace TrainScheduler.Core.Services
 
             ticket.ScheduleId = model.ScheduleId;
             ticket.UserId = model.UserId;
-            ticket.Price = model.Price;
             ticket.Fio = model.Fio;
 
             await _dbContext.SaveChangesAsync();
@@ -112,6 +110,66 @@ namespace TrainScheduler.Core.Services
                     TicketsSolt = g.Count()
                 })
                 .ToListAsync();
+        }
+
+        public async Task<List<BuyTicketDto>> GetBuyTicketsAsync(IEnumerable<int> scheduleIds)
+        {
+            var buyTicketsInfo = await _dbContext.Schedules
+               .AsNoTracking()
+               .Where(s => scheduleIds.Contains(s.Id))
+               .Select(s => new BuyTicketDto()
+               {
+                   ScheduleId = s.Id,
+                   DestinationName = s.Destination.Name,
+                   DestinationPrice = s.Destination.Price,
+                   DepartureTime = s.DepartureTime,
+                   ArrivalTime = s.ArrivalTime
+
+               })
+               .ToListAsync();
+
+            var buyTickets = new List<BuyTicketDto>();
+            foreach (var group in scheduleIds.GroupBy(i => i))
+            {
+                var scheduleBuyTicket = buyTicketsInfo.SingleOrDefault(t => t.ScheduleId == group.Key);
+                var buyTicketsForSameSchedule = Enumerable.Repeat(scheduleBuyTicket, group.Count());
+
+                buyTickets.AddRange(buyTicketsForSameSchedule); 
+            }
+
+            return buyTickets;
+        }
+
+        public async Task BuyTicketsAsync(IEnumerable<BuyTicketModel> tickets)
+        {
+            var scheduleIds = tickets.Select(t => t.ScheduleId).ToList();
+
+            var availableSeats = await _dbContext.Schedules
+                    .AsNoTracking()
+                    .Where(s => scheduleIds.Contains(s.Id))
+                    .Select(x => new
+                    {
+                        TicketsCount = x.Tickets.Count,
+                        TrainSeats = x.Destination.Train.Seats
+                    })
+                    .ToListAsync();
+
+            var noAvailableSeats = availableSeats.Any(s => s.TrainSeats - s.TicketsCount == 0);
+            if (noAvailableSeats)
+            {
+                throw new InvalidOperationException("For selected schedules there are no available seats.");
+            }
+
+            var newTickets = tickets.Select(t => new Ticket()
+            {
+                Fio = t.Fio,
+                UserId = t.UserId,
+                ScheduleId = t.ScheduleId,
+                PurchaseTime = DateTime.UtcNow
+            });
+
+            _dbContext.Tickets.AddRange(newTickets);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

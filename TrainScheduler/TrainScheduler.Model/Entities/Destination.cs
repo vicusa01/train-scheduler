@@ -12,6 +12,8 @@ namespace TrainScheduler.Model.Entities
 
         public string Name { get; set; }
 
+        public double Price { get; set; }
+
         [ForeignKey(nameof(Departure))]
         public int DepartureId { get; set; }
 

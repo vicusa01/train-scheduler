@@ -75,12 +75,17 @@
                 $(document).on("click", "td .btn", function () {            
                     const url = 'https://localhost:44362/Schedule/BookTicket'
 
-                    let scheduleId = $(this).parent().children('span').attr('data');
+                    let scheduleId = Number.parseInt($(this).parent().children('span').attr('data'));
+
+                    console.log(scheduleId);
 
                     fetch(url,
                         {
                             method: 'POST',
-                            body: { scheduleId: scheduleId }
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ scheduleId: scheduleId })
                         })
                         .then(rez => { return rez.json() })
                         .then(data => {

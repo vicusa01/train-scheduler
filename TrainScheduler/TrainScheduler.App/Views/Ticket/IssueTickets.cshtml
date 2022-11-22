@@ -3,30 +3,54 @@
     ViewBag.Title = "Issue tickets";
 }
 
-<form asp-action="IssueTickets" asp-controller="Ticket">
-    <div asp-validation-summary="All" class="text-danger"></div>
+@if (Model.Tickets.Any())
+{
+    <form asp-action="IssueTickets" asp-controller="Ticket">
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-    @for (int i = 0; i < Model.Tickets.Count; i++)
-    {
-        <div style="border: 1px solid black; padding: 30px;">
-            <div class="form-group">
-                <input type="hidden" asp-for="Tickets[i].ScheduleId" />
+        @for (int i = 0; i < Model.Tickets.Count; i++)
+        {
+            <div class="issue-ticket">
+                <div class="form-group">
+                    <input type="hidden" asp-for="Tickets[i].ScheduleId" />
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Tickets[i].UserId" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Destination</label>
+                    <br />
+                    <label class="control-label">@Model.Tickets[i].DestinationName</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Departure Time</label>
+                    <br />
+                    <label class="control-label">@Model.Tickets[i].DepartureTime</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Arrival Time</label>
+                    <br />
+                    <label class="control-label">@Model.Tickets[i].ArrivalTime</label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Tickets[i].Fio" class="control-label">FIO</label>
+                    <input type="text" asp-for="Tickets[i].Fio" class="form-control" style="max-width:400px" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Tickets[i].DestinationPrice" class="control-label">Price</label>
+                    <input disabled type="number" asp-for="Tickets[i].DestinationPrice" class="form-control" style="max-width:400px" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Tickets[i].Fio" class="control-label">FIO</label>
-                <input type="text" asp-for="Tickets[i].Fio" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Tickets[i].Price" class="control-label">Price</label>
-                <input disabled type="number" asp-for="Tickets[i].Price" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-secondary" />
-            </div>
+        }
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Buy" class="btn btn-outline-success" style="width: 100px;" />
         </div>
-    }
-    <br />
-    <div class="form-group">
-        <input type="submit" value="Buy" class="btn btn-outline-success" />
+    </form>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">The card is empty</h1>
     </div>
-</form>
+}

@@ -216,6 +216,7 @@ namespace TrainScheduler.App.Controllers
             { 
                 Id = destination.Id, 
                 Name = destination.Name,
+                Price = destination.Price,
                 DepartureId = destination.DepartureId,
                 ArrivalId = destination.ArrivalId,
                 TrainId = destination.TrainId,
@@ -396,7 +397,6 @@ namespace TrainScheduler.App.Controllers
                 ScheduleId = ticket.ScheduleId,
                 UserId = ticket.UserId,
                 Fio = ticket.Fio,
-                Price = ticket.Price,
                 Schedules = schedulesModel,
                 Users = await _accountService.GetAllUsersAsync()
             };

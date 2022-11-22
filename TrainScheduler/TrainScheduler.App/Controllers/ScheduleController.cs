@@ -76,16 +76,16 @@ namespace TrainScheduler.App.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult BookTicket(int scheduleId)
+        public IActionResult BookTicket([FromBody] BookTicketModel model)
         {
             if (HttpContext.Session.TryGet<List<int>>(CacheConstants.BookedSchedules, out var bookedSchedules))
             {
-                bookedSchedules.Add(scheduleId);
+                bookedSchedules.Add(model.ScheduleId);
                 HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
             }
             else
             {
-                bookedSchedules = new List<int>() { scheduleId };
+                bookedSchedules = new List<int>() { model.ScheduleId };
             }
 
             HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);

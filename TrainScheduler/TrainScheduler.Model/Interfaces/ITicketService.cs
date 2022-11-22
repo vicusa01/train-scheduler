@@ -17,5 +17,9 @@ namespace TrainScheduler.Model.Interfaces
         Task<List<Ticket>> FindTicketsAsync(string userId, string fio);
 
         Task<List<TicketsReportDto>> GetTicketsReportAsync(DateTime from, DateTime to);
+
+        Task<List<BuyTicketDto>> GetBuyTicketsAsync(IEnumerable<int> scheduleIds);
+
+        Task BuyTicketsAsync(IEnumerable<BuyTicketModel> tickets);
     }
 }
