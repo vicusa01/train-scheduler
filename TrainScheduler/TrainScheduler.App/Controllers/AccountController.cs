@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using TrainScheduler.App.Constants;
 using TrainScheduler.App.Models;
 using TrainScheduler.Model.Interfaces;
 using TrainScheduler.Model.ViewModels;
@@ -89,6 +90,9 @@ namespace TrainScheduler.App.Controllers
         public async Task<IActionResult> Logout()
         {
             await _accountService.SignOutAsync();
+
+            HttpContext.Session.Remove(CacheConstants.BookedSchedules);
+
             return RedirectToAction("Index", "Home");
         }
     }

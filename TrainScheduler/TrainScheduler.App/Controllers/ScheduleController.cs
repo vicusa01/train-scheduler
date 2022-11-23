@@ -76,16 +76,42 @@ namespace TrainScheduler.App.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult BookTicket([FromBody] BookTicketModel model)
+        public async Task<IActionResult> BookTicket([FromBody] BookTicketModel model)
         {
             if (HttpContext.Session.TryGet<List<int>>(CacheConstants.BookedSchedules, out var bookedSchedules))
             {
                 bookedSchedules.Add(model.ScheduleId);
-                HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
             }
             else
             {
                 bookedSchedules = new List<int>() { model.ScheduleId };
+            }
+
+            var scheduleTicketsInCart = bookedSchedules.Where(s => s == model.ScheduleId).Count();
+
+            var havAvailableTickets = await _scheduleService.HasAvaiableTickets(model.ScheduleId, scheduleTicketsInCart);
+
+            if (havAvailableTickets)
+            {
+                HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);
+                return Ok(bookedSchedules.Count);
+            }
+
+            return Ok(-1);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult RemoveTicket([FromBody] BookTicketModel model)
+        {
+            if (HttpContext.Session.TryGet<List<int>>(CacheConstants.BookedSchedules, out var bookedSchedules))
+            {
+                bookedSchedules.Remove(model.ScheduleId);
+            }
+            else
+            {
+                bookedSchedules = new List<int>();
             }
 
             HttpContext.Session.Set(CacheConstants.BookedSchedules, bookedSchedules);

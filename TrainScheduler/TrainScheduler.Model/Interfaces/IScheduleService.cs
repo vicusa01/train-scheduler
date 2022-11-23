@@ -17,5 +17,7 @@ namespace TrainScheduler.Model.Interfaces
         Task<List<AvailableSeatsDto>> GetAvailableSeatsAsync(int destinationId, DateTime date);
 
         Task<List<ScheduleDto>> GetByDateAsync(DateTime date);
+
+        Task<bool> HasAvaiableTickets(int scheduleId, int ticketsInCart);
     }
 }

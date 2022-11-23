@@ -23,9 +23,9 @@ namespace TrainScheduler.Core.Services
 
         public Task CreateAsync(CreateScheduleModel model)
         {
-            _dbContext.Schedules.Add(new Schedule() 
+            _dbContext.Schedules.Add(new Schedule()
             {
-                DestinationId = model.DestinationId ,
+                DestinationId = model.DestinationId,
                 DepartureTime = model.DepartureTime,
                 ArrivalTime = model.ArrivalTime
             });
@@ -81,6 +81,7 @@ namespace TrainScheduler.Core.Services
                .Select(x => new
                {
                    Schedule = x,
+                   Price = x.Destination.Price,
                    Tickets = x.Tickets,
                    TrainSeats = x.Destination.Train.Seats
                })
@@ -89,10 +90,12 @@ namespace TrainScheduler.Core.Services
             var results = schedules.Select(s => new AvailableSeatsDto()
             {
                 Schedule = s.Schedule,
+                Price = s.Price,
                 Seats = s.TrainSeats - s.Tickets.Count
-            });
+            })
+            .ToList();
 
-            return results.Where(s => s.Seats > 0).ToList();
+            return results;
         }
 
         public Task<List<ScheduleDto>> GetByDateAsync(DateTime date)
@@ -109,6 +112,21 @@ namespace TrainScheduler.Core.Services
                     Arrival = s.Destination.Arrival.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task<bool> HasAvaiableTickets(int scheduleId, int ticketsInCart)
+        {
+            var model = await _dbContext.Schedules
+                .AsNoTracking()
+                .Where(s => s.Id == scheduleId)
+                .Select(s => new
+                {
+                    TicketsCount = s.Tickets.Count,
+                    TrainTickets = s.Destination.Train.Seats
+                })
+                .SingleOrDefaultAsync();
+
+            return (model.TrainTickets - model.TicketsCount - ticketsInCart) >= 0;
         }
     }
 }

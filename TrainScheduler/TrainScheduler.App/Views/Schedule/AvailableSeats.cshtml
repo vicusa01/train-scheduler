@@ -38,6 +38,7 @@
     <tr>
         <th>Departure Time</th>
         <th>Arrival Time</th>
+        <th>Price</th>
         <th>Available seats</th>
         @if (User.Identity.IsAuthenticated)
         {
@@ -49,6 +50,7 @@
         <tr>
             <td>@availableSeat.Schedule.DepartureTime</td>
             <td>@availableSeat.Schedule.ArrivalTime</td>
+            <td>@availableSeat.Price</td>
             <td>@availableSeat.Seats</td>
             @if(User.Identity.IsAuthenticated)
             {
@@ -91,9 +93,14 @@
                         })
                         .then(rez => { return rez.json() })
                         .then(data => {
-                            $('#basket').html(data);
-                        })
 
+                            if (data == -1) {
+                                alert('There is no available tickets for this schedule.');
+                            }
+                            else {
+                                $('#basket').html(data);
+                            }        
+                        })
                 });    
             });
         })(jQuery);

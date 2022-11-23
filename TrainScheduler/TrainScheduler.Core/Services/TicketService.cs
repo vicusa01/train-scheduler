@@ -84,7 +84,7 @@ namespace TrainScheduler.Core.Services
                .ThenInclude(x => x.Destination)
                .Include(x => x.User)
                .AsQueryable();
-              
+
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 query = query.Where(x => x.UserId == userId);
@@ -134,7 +134,7 @@ namespace TrainScheduler.Core.Services
                 var scheduleBuyTicket = buyTicketsInfo.SingleOrDefault(t => t.ScheduleId == group.Key);
                 var buyTicketsForSameSchedule = Enumerable.Repeat(scheduleBuyTicket, group.Count());
 
-                buyTickets.AddRange(buyTicketsForSameSchedule); 
+                buyTickets.AddRange(buyTicketsForSameSchedule);
             }
 
             return buyTickets;
@@ -154,7 +154,7 @@ namespace TrainScheduler.Core.Services
                     })
                     .ToListAsync();
 
-            var noAvailableSeats = availableSeats.Any(s => s.TrainSeats - s.TicketsCount == 0);
+            var noAvailableSeats = availableSeats.Any(s => s.TrainSeats - s.TicketsCount <= 0);
             if (noAvailableSeats)
             {
                 throw new InvalidOperationException("For selected schedules there are no available seats.");

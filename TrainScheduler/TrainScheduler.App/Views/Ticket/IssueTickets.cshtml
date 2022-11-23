@@ -11,6 +11,9 @@
         @for (int i = 0; i < Model.Tickets.Count; i++)
         {
             <div class="issue-ticket">
+                <div class="issue-ticket-remove">
+                    <i class="fa fa-window-close" aria-hidden="true"></i>
+                </div>
                 <div class="form-group">
                     <input type="hidden" asp-for="Tickets[i].ScheduleId" />
                 </div>
@@ -51,6 +54,44 @@
 else
 {
     <div class="text-center">
-        <h1 class="display-4">The card is empty</h1>
+        <h1 class="display-4">The cart is empty</h1>
     </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        (function ($) {
+            $(function () {
+
+                $(document).on("click", ".issue-ticket-remove", function () {
+                    const url = 'https://localhost:44362/Schedule/RemoveTicket';
+
+                    var ticket = $(this).parent();
+
+                    console.log(ticket);
+                    console.log(ticket.find('input[name$="ScheduleId"]'));
+
+                    let scheduleId = Number.parseInt(ticket.find('input[name$="ScheduleId"]').val());
+
+                    console.log(scheduleId);
+
+                    fetch(url,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ scheduleId: scheduleId })
+                        })
+                        .then(rez => { return rez.json() })
+                        .then(data => { 
+                            $('#basket').html(data);        
+
+                            ticket.remove();
+                        })
+                });
+            });
+        })(jQuery);
+    </script>
 }
