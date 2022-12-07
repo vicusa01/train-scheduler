@@ -8,9 +8,10 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-row">
         <div class="col" style="max-width: 400px">
-            <select class="custom-select"
+            <select class="custom-select" 
                     asp-for="UserId"
                     asp-items="@(new SelectList(Model.Users, nameof(IdentityUser.Id), nameof(IdentityUser.Email)))">
+                <option value="">Please Select</option>
             </select>
         </div>
         <div class="col" style="max-width: 400px">

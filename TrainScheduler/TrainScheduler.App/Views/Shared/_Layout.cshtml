@@ -68,13 +68,13 @@
                     </ul>
 
                     @if (User.Identity.IsAuthenticated)
-                    {          
+                    {
                         <div style="margin-left: 200px;">
                             <a asp-controller="Ticket" asp-action="IssueTickets" style="position:relative;">
                                 <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 25px;position:relative; top: 3px;"></i>
                                 <span>Cart: </span>
                                 <span id="basket">@bookedSchedulesCount</span>
-                            </a>    
+                            </a>
                         </div>
 
                         <form class="form-inline my-2 my-lg-0" method="post" asp-controller="Account" asp-action="Logout">
@@ -102,4 +102,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
-</html >
+</html>
