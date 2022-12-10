@@ -1,0 +1,75 @@
+﻿.table {
+    background-color: #ffffff36;
+    margin-left: 37px;
+    border-radius: 10px;
+   width:95%;
+   font-size:22px;
+
+}
+    .table th,.table td {
+        padding-right: 0px;
+    }
+    .table th{
+        border:none;
+    }
+.btn-primary {
+    font-size: 20px;
+    background-color: #1b7ac2eb;
+    font-weight:500;
+    margin-right:10px;
+}
+    .btn-danger{
+        font-size:20px;
+        font-weight:700;
+    }
+.btn-primary:hover, .btn-danger:hover{
+    opacity:0.6;
+}
+.admina {
+    color: #1AA090;
+    font-size: 26px;
+    font-weight: 400;
+    border-bottom: 1px solid white;
+    margin-left: 39px;
+}
+    .admina:hover {
+        color: white;
+        border-bottom: 1px solid #1AA090;
+    }
+.form-control,.custom-select {
+    background-color: #ffffff36;
+    margin-left: 37px;
+    border-radius: 10px;
+    width: 95%;
+    font-size: 22px;
+    color: white;
+}
+.custom-select{
+    height:49px;
+}
+    .custom-select:focus {
+        background-color: grey;
+    }
+    .btn-outline-secondary {
+        background-color: #1AA090;
+        color: white;
+        font-size: 22px;
+        margin-left: 39px;
+        margin-top: 5px;
+    }
+.text-danger {
+    margin-left: 39px;
+    font-size: 20px;
+}
+a:hover{
+    text-decoration:none;
+}
+.input-group{
+    width:89%;
+}
+.form-row>.col{
+    padding-top:17px;
+}
+.text-dark:hover{
+    opacity:0.3!important;
+}

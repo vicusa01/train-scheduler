@@ -1,0 +1,194 @@
+﻿
+@keyframes spinner {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateZ(359deg);
+    }
+}
+
+
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 77px;
+   
+}
+
+.login1 {
+    border-radius: 2px 2px 5px 5px;
+    padding: 10px 20px 20px 20px;
+    width: 90%;
+    max-width: 388px;
+    min-height: 361px;
+    background: #ffffff;
+    position: relative;
+    padding-bottom: 80px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+    .login1.loading button {
+        max-height: 100%;
+        padding-top: 50px;
+    }
+
+        .login1.loading button .spinner {
+            opacity: 1;
+            top: 40%;
+        }
+
+    .login1.ok button {
+        background-color: #8bc34a;
+    }
+
+        .login1.ok button .spinner {
+            border-radius: 0;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            height: 20px;
+            animation: none;
+            transform: rotateZ(-45deg);
+        }
+
+    .login1 input {
+        display: block;
+        padding: 15px 10px;
+        margin-bottom: 26px;
+        width: 100%;
+        height:66px;
+        border: 1px solid #ddd;
+        transition: border-width 0.2s ease;
+        border-radius: 2px;
+        color: #ccc;
+        font-size:24px;
+    }
+    .login1 .fa-user::before {
+        top: -19px;
+        position: relative;
+        left:8px;
+    }
+    .login1 .fa-key::before {
+        top: -18px;
+        position: relative;
+        left: 8px;
+    }
+        .login1 input + i.fa {
+            color: #fff;
+            font-size: 1em;
+            position: absolute;
+            margin-top: -47px;
+            opacity: 0;
+            left: 0;
+            transition: all 0.1s ease-in;
+        }
+
+    .login1 input:focus {
+        outline: none;
+        color: #444;
+        border-color: #1AA090;
+        border-left-width: 48px;
+    }
+
+            .login1 input:focus + i.fa {
+                opacity: 1;
+                left: 30px;
+                transition: all 0.25s ease-out;
+            }
+
+    .login1 input[type=checkbox] {
+        font-size: 0.8em;
+        color: #2196F3;
+        text-decoration: none;
+        padding-bottom:20px;
+        width:17px;
+        margin:0px;
+        display:inline-block;
+        margin-left:5px;
+    }
+
+    .login1 .title {
+        color: #444;
+        font-size: 2.2em;
+        font-weight: bold;
+        margin: 10px 0 30px 0;
+        border-bottom: 1px solid #eee;
+       
+    }
+
+    .login1 button {
+        width: 100%;
+        height: 100%;
+        padding: 10px 10px;
+        background: #1AA090;
+        color: #fff;
+        display: block;
+        border: none;
+        margin-top: 20px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        max-height: 60px;
+        border: 0px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 2px 2px;
+        transform: rotateZ(0deg);
+        transition: all 0.1s ease-out;
+        border-bottom-width: 7px;
+    }
+
+        .login1 button .spinner {
+            display: block;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            border: 4px solid #ffffff;
+            border-top-color: rgba(255, 255, 255, 0.3);
+            border-radius: 100%;
+            left: 50%;
+            top: 0;
+            opacity: 0;
+            margin-left: -20px;
+            margin-top: -20px;
+            animation: spinner 0.6s infinite linear;
+            transition: top 0.3s 0.3s ease, opacity 0.3s 0.3s ease, border-radius 0.3s ease;
+            box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+        }
+
+    .login1:not(.loading) button:hover {
+        box-shadow: 0px 1px 3px #2196F3;
+    }
+
+    .login1:not(.loading) button:focus {
+        border-bottom-width: 4px;
+    }
+    .state{
+        font-size:23px;
+        font-weight:600;
+    }
+    .login1 label{
+        position:relative;
+        top:-28px;
+        left:10px;
+        display:inline;
+        color:black;
+        font-weight:500;
+    }
+
+footer {
+    display: block;
+    padding-top: 50px;
+    text-align: center;
+    color: #ddd;
+    font-weight: normal;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
+    font-size: 0.8em;
+}
+
+    footer a, footer a:link {
+        color: #fff;
+        text-decoration: none;
+    }

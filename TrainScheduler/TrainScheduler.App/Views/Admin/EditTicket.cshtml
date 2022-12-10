@@ -9,21 +9,21 @@
         <input type="hidden" asp-for="Id" />
     </div>
     <div class="form-group">
-        <label class="control-label">Destination</label>
+        <label style=" margin-left: 39px;font-size:26px;" class="control-label">Destination</label>
         <select class="custom-select" aria-label="Select departure stop"
                 asp-for="ScheduleId"
                 asp-items="@Model.Schedules">
         </select>
     </div>
     <div class="form-group">
-        <label class="control-label">Email</label>
+        <label  style =" margin-left: 39px;font-size:26px;" class="control-label">Email</label>
         <select class="custom-select" aria-label="Select departure stop"
                 asp-for="UserId"
                 asp-items="@(new SelectList(Model.Users, nameof(IdentityUser.Id), nameof(IdentityUser.Email)))">
         </select>
     </div>
     <div class="form-group">
-        <label asp-for="Fio" class="control-label">FIO</label>
+        <label style=" margin-left: 39px;font-size:26px;" asp-for="Fio" class="control-label">FIO</label>
         <input type="text" asp-for="Fio" class="form-control" />
     </div>
     <div class="form-group">

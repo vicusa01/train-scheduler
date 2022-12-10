@@ -9,7 +9,7 @@
         <input type="hidden" asp-for="Id" />
     </div>
     <div class="form-group">
-        <label class="control-label">Destination</label>
+        <label style=" margin-left: 39px;font-size:26px;"  class="control-label">Destination</label>
         <select class="custom-select" aria-label="Select Destination"
                 asp-for="DestinationId"
                 asp-items="@(new SelectList(Model.Destinations, nameof(Destination.Id), nameof(Destination.Name)))">
@@ -17,7 +17,7 @@
     </div>
     <div class="form-row">
         <div class="col">
-            <label asp-for="DepartureTime" class="control-label">Departure time</label>
+            <label style=" margin-left: 39px;font-size:26px;" asp-for="DepartureTime" class="control-label">Departure time</label>
             <div class="input-group date" id="datetimepicker1">
                 <input type="datetime" asp-for="DepartureTime" value="@Model.DepartureTime" class="form-control" />
                 <div class="input-group-addon input-group-append">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col">
-            <label asp-for="ArrivalTime" class="control-label">Arrival time</label>
+            <label style=" margin-left: 39px;font-size:26px;"  asp-for="ArrivalTime" class="control-label">Arrival time</label>
             <div class="input-group date" id="datetimepicker1">
                 <input type="datetime" asp-for="ArrivalTime" value="@Model.ArrivalTime" class="form-control" />
                 <div class="input-group-addon input-group-append">

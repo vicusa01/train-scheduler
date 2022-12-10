@@ -2,35 +2,36 @@
 @{
     ViewData["Title"] = "Admin";
 }
+<div style="margin:20px; font-size:24px;">
+    <div>
+        <a class="nav-link text-light" asp-controller="Admin" asp-action="Stops">Stops</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Stops">Stops</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Admin" asp-action="Trains">Trains</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Trains">Trains</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Admin" asp-action="Destinations">Destinations</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Destinations">Destinations</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Admin" asp-action="Schedules">Schedules</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Schedules">Schedules</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Admin" asp-action="Tickets">Tickets</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Admin" asp-action="Tickets">Tickets</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Ticket" asp-action="AdminBooking">AdminBooking</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Ticket" asp-action="AdminBooking">AdminBooking</a>
-</div>
+    <div>
+        <a class="nav-link text-light" asp-controller="Schedule" asp-action="AvailableSeats">AvailableSeats</a>
+    </div>
 
-<div>
-    <a class="nav-link text-dark" asp-controller="Schedule" asp-action="AvailableSeats">AvailableSeats</a>
-</div>
-
-<div>
-    <a class="nav-link text-dark" asp-controller="Ticket" asp-action="TicketsReport">TicketsReport</a>
+    <div>
+        <a class="nav-link text-light" asp-controller="Ticket" asp-action="TicketsReport">TicketsReport</a>
+    </div>
 </div>

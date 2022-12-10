@@ -8,14 +8,14 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-row">
         <div class="col" style="max-width: 500px">
-            <label class="control-label">Destination</label>
+            <label style=" margin-left: 39px;font-size:26px;"  class="control-label">Destination</label>
             <select class="custom-select"
                     asp-for="DestinationId"
                     asp-items="@(new SelectList(Model.Destinations, nameof(Destination.Id), nameof(Destination.Name)))">
             </select>
         </div>
         <div class="col">
-            <label class="control-label">Date</label>
+            <label style=" margin-left: 39px;font-size:26px;" class="control-label">Date</label>
             <div class="input-group date" id="datetimepicker1">
                 <input type="datetime" asp-for="Date" value="@Model.Date" class="form-control" />
                 <div class="input-group-addon input-group-append">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col">
-            <input type="submit" value="Search available seats" class="btn btn-outline-secondary" style="position: relative; top: 32px; margin-left: 60px;" />
+            <input type="submit" value="Search available seats" class="btn btn-outline-secondary" style="position: relative; top: 43px; margin-left: 60px;" />
         </div>
     </div>
 </form>
