@@ -53,6 +53,13 @@ namespace TrainScheduler.App.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteTicketForAdmin(int id)
+        {
+            await _ticketService.DeleteAsync(id);
+            return RedirectToAction("AdminBooking");
+        }
+
         [HttpGet]
         public IActionResult TicketsReport()
         {

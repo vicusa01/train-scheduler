@@ -43,7 +43,7 @@
             <td>@ticket.User.Email</td>
             <td>@ticket.Fio</td>
             <td>
-                <form asp-controller="Admin" asp-action="DeleteTicket" asp-route-id="@ticket.Id" method="post">
+                <form asp-controller="Ticket" asp-action="DeleteTicketForAdmin" asp-route-id="@ticket.Id" method="post">
                     <button type="submit" class="btn btn-sm btn-danger">
                         Remove booking
                     </button>
