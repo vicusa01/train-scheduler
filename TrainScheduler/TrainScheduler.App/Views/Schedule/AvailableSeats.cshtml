@@ -7,11 +7,18 @@
 <form asp-action="AvailableSeats" asp-controller="Schedule">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-row">
-        <div class="col" style="max-width: 500px">
-            <label style=" margin-left: 39px;font-size:26px;"  class="control-label">Destination</label>
+        <div class="col">
+            <label style=" margin-left: 39px;font-size:26px;" class="control-label">Departure Stop</label>
             <select class="custom-select"
-                    asp-for="DestinationId"
-                    asp-items="@(new SelectList(Model.Destinations, nameof(Destination.Id), nameof(Destination.Name)))">
+                    asp-for="DepartureStopId"
+                    asp-items="@(new SelectList(Model.Stops, nameof(Stop.Id), nameof(Stop.Name)))">
+            </select>
+        </div>
+        <div class="col">
+            <label style=" margin-left: 39px;font-size:26px;" class="control-label">Arrival Stop</label>
+            <select class="custom-select"
+                    asp-for="ArrivalStopId"
+                    asp-items="@(new SelectList(Model.Stops, nameof(Stop.Id), nameof(Stop.Name)))">
             </select>
         </div>
         <div class="col">

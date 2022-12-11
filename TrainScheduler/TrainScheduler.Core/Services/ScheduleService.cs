@@ -73,11 +73,13 @@ namespace TrainScheduler.Core.Services
                              .ToListAsync();
         }
 
-        public async Task<List<AvailableSeatsDto>> GetAvailableSeatsAsync(int destinationId, DateTime date)
+        public async Task<List<AvailableSeatsDto>> GetAvailableSeatsAsync(int departureStopId, int arrivalStopId, DateTime date)
         {
             var schedules = await _dbContext.Schedules
                .AsNoTracking()
-               .Where(s => s.DestinationId == destinationId && s.DepartureTime.Date == date.Date)
+               .Where(s => s.Destination.DepartureId == departureStopId &&
+                           s.Destination.ArrivalId == arrivalStopId &&
+                           s.DepartureTime.Date == date.Date)
                .Select(x => new
                {
                    Schedule = x,

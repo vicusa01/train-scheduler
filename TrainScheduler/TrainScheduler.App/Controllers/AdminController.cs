@@ -374,11 +374,7 @@ namespace TrainScheduler.App.Controllers
             await _ticketService.DeleteAsync(id);
             return RedirectToAction("Tickets");
         }
-        public async Task<IActionResult> DeleteTicket1(int id)
-        {
-            await _ticketService.DeleteAsync(id);
-            return RedirectToAction("Admin Booking");
-        }
+
         [HttpGet]
         public async Task<IActionResult> EditTicket(int id)
         {

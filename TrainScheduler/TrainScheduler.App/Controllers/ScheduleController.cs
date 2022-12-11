@@ -14,14 +14,14 @@ namespace TrainScheduler.App.Controllers
     public class ScheduleController : Controller
     {
         private readonly IScheduleService _scheduleService;
-        private readonly IDestinationService _destinationService;
+        private readonly IStopService _stopService;
 
         public ScheduleController(
             IScheduleService scheduleService,
-            IDestinationService destinationService)
+            IStopService stopService)
         {
             _scheduleService = scheduleService ?? throw new ArgumentNullException(nameof(scheduleService));
-            _destinationService = destinationService ?? throw new ArgumentNullException(nameof(destinationService));
+            _stopService = stopService ?? throw new ArgumentNullException(nameof(stopService));
         }
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace TrainScheduler.App.Controllers
         {
             var model = new AvailableSeatsModel()
             {
-                Destinations = await _destinationService.GetAllAsync(),
+                Stops = await _stopService.GetAllAsync(),
                 Date = DateTime.Now
             };
 
@@ -37,14 +37,15 @@ namespace TrainScheduler.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AvailableSeats(int destinationId, DateTime date)
+        public async Task<IActionResult> AvailableSeats(int departureStopId, int arrivalStopId, DateTime date)
         {
             var model = new AvailableSeatsModel()
             {
-                DestinationId = destinationId,
+                DepartureStopId = departureStopId,
+                ArrivalStopId = arrivalStopId,
                 Date = date,
-                Destinations = await _destinationService.GetAllAsync(),
-                AvailableSeats = await _scheduleService.GetAvailableSeatsAsync(destinationId, date)
+                Stops = await _stopService.GetAllAsync(),
+                AvailableSeats = await _scheduleService.GetAvailableSeatsAsync(departureStopId, arrivalStopId, date)
             };
 
             return View(model);
