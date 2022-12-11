@@ -10,7 +10,7 @@
 
         @for (int i = 0; i < Model.Tickets.Count; i++)
         {
-            <div class="issue-ticket">
+            <div class="issue-ticket" style="font-size:20px;margin-left:20px;">
                 <div class="issue-ticket-remove">
                     <i class="fa fa-window-close" aria-hidden="true"></i>
                 </div>
@@ -37,17 +37,17 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Tickets[i].Fio" class="control-label">FIO</label>
-                    <input type="text" asp-for="Tickets[i].Fio" class="form-control" style="max-width:400px" />
+                    <input style="margin-left:0px;" type="text" asp-for="Tickets[i].Fio" class="form-control" style="max-width:400px" />
                 </div>
                 <div class="form-group">
                     <label asp-for="Tickets[i].DestinationPrice" class="control-label">Price</label>
-                    <input disabled type="number" asp-for="Tickets[i].DestinationPrice" class="form-control" style="max-width:400px" />
+                    <input disabled type="number" asp-for="Tickets[i].DestinationPrice" class="form-control" style="max-width:400px;    background-color: #ffffff36; margin-left:0px;" />
                 </div>
             </div>
         }
         <br />
         <div class="form-group">
-            <input type="submit" value="Buy" class="btn btn-outline-success" style="width: 100px;" />
+            <input type="submit" value="Buy" class="btn btn-outline-success" style="width: 100px;margin-left:20px;font-size:20px;" />
         </div>
     </form>
 }
