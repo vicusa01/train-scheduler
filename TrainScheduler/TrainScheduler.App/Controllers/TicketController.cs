@@ -16,16 +16,13 @@ namespace TrainScheduler.App.Controllers
     {
         private readonly ITicketService _ticketService;
         private readonly IAccountService _accountService;
-        private readonly IDestinationService _destinationService;
 
         public TicketController(
             ITicketService ticketService,
-            IAccountService accountService,
-            IDestinationService destinationService)
+            IAccountService accountService)
         {
             _ticketService = ticketService ?? throw new ArgumentNullException(nameof(ticketService));
             _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
-            _destinationService = destinationService ?? throw new ArgumentNullException(nameof(destinationService));
         }
 
         [HttpGet]

@@ -19,6 +19,7 @@ namespace TrainScheduler.Model.ViewModels
         public DateTime ArrivalTime { get; set; }
 
         [Required]
+        [RegularExpression(@"([A-Z][a-z]+[\-\s]?){3}", ErrorMessage = "Input valid FIO")]
         public string Fio { get; set; }
 
         public string UserId { get; set; }
